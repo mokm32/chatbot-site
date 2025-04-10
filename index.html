@@ -18,8 +18,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* Menggunakan min-height untuk responsivitas */
             color: #fff;
+            overflow-y: auto; /* Memungkinkan scroll jika konten panjang */
         }
 
         .container {
@@ -27,10 +28,12 @@
             border: 2px solid #ff1a1a;
             border-radius: 15px;
             max-width: 650px;
-            padding: 40px;
+            width: 90%; /* Membuat lebar responsif */
+            padding: 20px; /* Padding lebih kecil untuk smartphone */
             text-align: center;
             box-shadow: 0 0 20px rgba(255, 26, 26, 0.5);
             animation: glow 2s infinite alternate;
+            margin: 20px; /* Margin untuk jarak dari tepi layar */
         }
 
         @keyframes glow {
@@ -40,7 +43,7 @@
 
         h1 {
             color: #ff1a1a;
-            font-size: 32px;
+            font-size: clamp(24px, 5vw, 32px); /* Ukuran font responsif */
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 20px;
@@ -49,7 +52,7 @@
 
         p {
             color: #d9d9d9;
-            font-size: 16px;
+            font-size: clamp(14px, 3vw, 16px); /* Ukuran font responsif */
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -57,15 +60,17 @@
         .btn {
             background: linear-gradient(45deg, #ff1a1a, #8000ff);
             color: #fff;
-            padding: 15px 35px;
+            padding: 12px 25px; /* Padding lebih kecil untuk smartphone */
             border: none;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: clamp(14px, 3vw, 18px); /* Ukuran font responsif */
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
             margin: 5px;
+            width: 100%; /* Tombol penuh lebar di layar kecil */
+            max-width: 300px; /* Batas maksimum lebar di desktop */
         }
 
         .btn:hover {
@@ -84,7 +89,7 @@
             border-radius: 5px;
             background: #333;
             color: #fff;
-            font-size: 16px;
+            font-size: clamp(14px, 3vw, 16px); /* Ukuran font responsif */
             margin-bottom: 15px;
             outline: none;
         }
@@ -95,7 +100,7 @@
 
         .submit-btn {
             background: linear-gradient(45deg, #8000ff, #ff1a1a);
-            padding: 12px 30px;
+            padding: 12px 25px;
         }
 
         .loading {
@@ -127,30 +132,48 @@
             text-decoration: underline;
         }
 
+        .warning {
+            color: #ff1a1a;
+            font-size: clamp(12px, 2.5vw, 14px); /* Ukuran font responsif */
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
         .info {
             margin-top: 20px;
-            font-size: 14px;
+            font-size: clamp(12px, 2.5vw, 14px); /* Ukuran font responsif */
             color: #b3b3b3;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
+        /* Media Queries untuk Responsivitas */
         @media (max-width: 600px) {
             .container {
-                margin: 20px;
-                padding: 25px;
-            }
-
-            h1 {
-                font-size: 24px;
+                padding: 15px;
             }
 
             .btn {
-                width: 100%;
-                padding: 12px;
+                padding: 10px 20px;
+            }
+
+            .loader {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (min-width: 601px) {
+            .container {
+                padding: 40px;
+            }
+
+            .btn {
+                width: auto; /* Tombol tidak penuh lebar di desktop */
+                display: inline-block;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+ *" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -172,6 +195,7 @@
             <button class="btn" onclick="selectPackage(1)">1 Device</button>
             <button class="btn" onclick="selectPackage(2)">2 Device</button>
             <button class="btn" onclick="selectPackage(3)">3 Device</button>
+            <p class="warning">AMARAN!! KESALAHAN ANDA MEMILIH PAKGE PESANAN AKAN MEMBUAT GENERATE ID ANDA AKAN ERROR. KAMI TIDAK BERTANGGUNGJAWAB</p>
         </div>
         <div id="loading" class="loading">
             <div class="loader"></div>
@@ -198,7 +222,6 @@
                 alert('Silakan masukkan ID Pesanan terlebih dahulu!');
                 return;
             }
-            // Simpan ID Pesanan dan tampilkan pilihan paket
             window.orderId = orderId;
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('choice-section').style.display = 'block';
@@ -208,7 +231,6 @@
             document.getElementById('choice-section').style.display = 'none';
             document.getElementById('loading').style.display = 'flex';
 
-            // Animasi loading 5 detik
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('result-section').style.display = 'block';
