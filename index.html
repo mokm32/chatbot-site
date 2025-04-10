@@ -81,7 +81,7 @@
             outline: none;
         }
 
-        .input-section, .choice-section, .loading, .result-section, .error-section {
+        .welcome-section, .question-section, .input-section, .choice-section, .loading, .result-section, .error-section {
             display: none;
         }
 
@@ -210,7 +210,13 @@
             <p>
                 Selamat datang, Hunter! Untuk melacak pesananmu dari toko Shopee kami, siapkan <strong>ID Pesanan</strong> dan tekan tombol di bawah ini. Chatbot kami akan membantumu naik level dalam pelayanan!
             </p>
-            <button class="btn" onclick="showInput()">Aktifkan Shadow Chat</button>
+            <button class="btn" onclick="showQuestion()">Aktifkan Shadow Chat</button>
+        </div>
+        <div id="question-section" class="question-section">
+            <h1>Pertanyaan</h1>
+            <p>Adakah anda pernah membeli ID OTT di kedai kami sebelum ini?</p>
+            <button class="btn" onclick="setPurchaseHistory('yes')">Pernah</button>
+            <button class="btn" onclick="setPurchaseHistory('no')">Tidak</button>
         </div>
         <div id="input-section" class="input-section">
             <h1>Masukkan ID Pesanan</h1>
@@ -220,9 +226,7 @@
         <div id="choice-section" class="choice-section">
             <h1>Pilih Paket Pesanan</h1>
             <p>Berapa perangkat yang kamu pesan, Hunter?</p>
-            <button class="btn" onclick="selectPackage(1)">1 Device</button>
-            <button class="btn" onclick="selectPackage(2)">2 Device</button>
-            <button class="btn" onclick="selectPackage(3)">3 Device</button>
+            <div id="package-options"></div>
             <p class="warning">AMARAN!! KESALAHAN ANDA MEMILIH PAKGE PESANAN AKAN MEMBUAT GENERATE ID ANDA AKAN ERROR. KAMI TIDAK BERTANGGUNGJAWAB</p>
         </div>
         <div id="loading" class="loading">
@@ -243,9 +247,16 @@
 
     <script>
         const usedOrderIds = JSON.parse(localStorage.getItem('usedOrderIds')) || [];
+        let hasPurchasedBefore = null;
 
-        function showInput() {
+        function showQuestion() {
             document.getElementById('welcome-section').style.display = 'none';
+            document.getElementById('question-section').style.display = 'block';
+        }
+
+        function setPurchaseHistory(choice) {
+            hasPurchasedBefore = choice === 'yes';
+            document.getElementById('question-section').style.display = 'none';
             document.getElementById('input-section').style.display = 'block';
         }
 
@@ -265,9 +276,24 @@
             window.orderId = orderId;
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('choice-section').style.display = 'block';
+
+            const packageOptions = document.getElementById('package-options');
+            if (hasPurchasedBefore) {
+                packageOptions.innerHTML = `
+                    <button class="btn" onclick="selectPackage('rebuy1')">Pembelian Semula 1 Device</button>
+                    <button class="btn" onclick="selectPackage('rebuy2')">Pembelian Semula 2 Device</button>
+                    <button class="btn" onclick="selectPackage('rebuy3')">Pembelian Semula 3 Device</button>
+                `;
+            } else {
+                packageOptions.innerHTML = `
+                    <button class="btn" onclick="selectPackage(1)">1 Device</button>
+                    <button class="btn" onclick="selectPackage(2)">2 Device</button>
+                    <button class="btn" onclick="selectPackage(3)">3 Device</button>
+                `;
+            }
         }
 
-        function selectPackage(deviceCount) {
+        function selectPackage(packageType) {
             document.getElementById('choice-section').style.display = 'none';
             document.getElementById('loading').style.display = 'flex';
 
@@ -279,7 +305,7 @@
                 localStorage.setItem('usedOrderIds', JSON.stringify(usedOrderIds));
 
                 let resultContent = '';
-                if (deviceCount === 1) {
+                if (packageType === 1) {
                     resultContent = `
                         <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
                         <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
@@ -294,7 +320,7 @@
                         <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
                         <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
                     `;
-                } else if (deviceCount === 2) {
+                } else if (packageType === 2) {
                     resultContent = `
                         <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
                         <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
@@ -309,12 +335,57 @@
                         <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
                         <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
                     `;
-                } else if (deviceCount === 3) {
+                } else if (packageType === 3) {
                     resultContent = `
                         <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
                         <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
                         <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
                         <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4llgq45" target="_blank">https://bit.ly/4llgq45</a></p>
+                        <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
+                        <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
+                        <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
+                        <p><strong>📌 Nota Penting</strong></p>
+                        <p>🔄 Sentiasa tekan Reload Data ID setiap kali buka aplikasi</p>
+                        <p>📱 1 ID hanya untuk 3 peranti sahaja</p>
+                        <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
+                        <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
+                    `;
+                } else if (packageType === 'rebuy1') {
+                    resultContent = `
+                        <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
+                        <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
+                        <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
+                        <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4llgq45" target="_blank">https://bit.ly/4llgq45</a></p>
+                        <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
+                        <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
+                        <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
+                        <p><strong>📌 Nota Penting</strong></p>
+                        <p>🔄 Sentiasa tekan Reload Data ID setiap kali buka aplikasi</p>
+                        <p>📱 1 ID hanya untuk 1 peranti sahaja</p>
+                        <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
+                        <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
+                    `;
+                } else if (packageType === 'rebuy2') {
+                    resultContent = `
+                        <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
+                        <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
+                        <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
+                        <p>3. Link channel OTT Navigator: <a href="https://bit.ly/3RIht05" target="_blank">https://bit.ly/3RIht05</a></p>
+                        <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
+                        <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
+                        <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
+                        <p><strong>📌 Nota Penting</strong></p>
+                        <p>🔄 Sentiasa tekan Reload Data ID setiap kali buka aplikasi</p>
+                        <p>📱 1 ID hanya untuk 2 peranti sahaja</p>
+                        <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
+                        <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
+                    `;
+                } else if (packageType === 'rebuy3') {
+                    resultContent = `
+                        <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
+                        <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
+                        <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
+                        <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4j3aUBn" target="_blank">https://bit.ly/4j3aUBn</a></p>
                         <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
                         <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
                         <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
