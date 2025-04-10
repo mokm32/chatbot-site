@@ -3,70 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot Toko Shopee Kami</title>
+    <title>Chatbot Toko - Solo Leveling</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif; /* Gunakan font modern */
         }
 
         body {
-            background-color: #f5f5f5;
+            background: url('https://via.placeholder.com/1920x1080/1a1a1a/333333?text=Solo+Leveling+Background') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #fff;
         }
 
         .container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            padding: 30px;
+            background: rgba(26, 26, 26, 0.85); /* Latar gelap semi-transparan */
+            border: 2px solid #ff1a1a; /* Aksen merah */
+            border-radius: 15px;
+            max-width: 550px;
+            padding: 40px;
             text-align: center;
+            box-shadow: 0 0 20px rgba(255, 26, 26, 0.5); /* Cahaya merah */
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(255, 26, 26, 0.5); }
+            to { box-shadow: 0 0 30px rgba(128, 0, 255, 0.7); } /* Transisi ke ungu */
         }
 
         h1 {
-            color: #ee4d2d; /* Warna oranye Shopee */
+            color: #ff1a1a;
+            font-size: 32px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 26, 26, 0.8);
         }
 
         p {
-            color: #333;
-            margin-bottom: 20px;
+            color: #d9d9d9;
+            font-size: 16px;
             line-height: 1.6;
+            margin-bottom: 25px;
         }
 
         .btn {
-            background-color: #ee4d2d;
-            color: white;
-            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff1a1a, #8000ff); /* Gradasi merah ke ungu */
+            color: #fff;
+            padding: 15px 35px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             text-decoration: none;
             display: inline-block;
         }
 
         .btn:hover {
-            background-color: #d43c1e;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
         }
 
         .info {
             margin-top: 20px;
             font-size: 14px;
-            color: #666;
+            color: #b3b3b3;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         @media (max-width: 600px) {
             .container {
                 margin: 20px;
-                padding: 20px;
+                padding: 25px;
             }
 
             h1 {
@@ -75,30 +93,22 @@
 
             .btn {
                 width: 100%;
+                padding: 12px;
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Selamat Datang di Chatbot Toko Kami!</h1>
+        <h1>Panggilan Hunter!</h1>
         <p>
-            Terima kasih telah berbelanja di toko Shopee kami. Untuk mempermudah pelayanan, silakan siapkan <strong>ID Pesanan</strong> Anda dan klik tombol di bawah ini untuk mulai berbual dengan chatbot kami.
+            Selamat datang, Hunter! Untuk melacak pesananmu dari toko Shopee kami, siapkan <strong>ID Pesanan</strong> dan tekan tombol di bawah ini. Chatbot kami akan membantumu naik level dalam pelayanan!
         </p>
-        <a href="https://wa.me/6281234567890?text=Halo!%20Saya%20ingin%20berbual%20tentang%20pesanan%20saya." class="btn">Mulai Chat Sekarang</a>
+        <a href="https://wa.me/6281234567890?text=Halo!%20Saya%20ingin%20berbual%20tentang%20pesanan%20saya." class="btn">Aktifkan Shadow Chat</a>
         <div class="info">
-            <p>Cara menemukan ID Pesanan: Buka aplikasi Shopee > Pesanan Saya > Pilih pesanan > Lihat ID Pesanan di detail.</p>
+            <p>Cara menemukan ID Pesanan: Buka Shopee > Pesanan Saya > Pilih pesanan > Lihat ID di detail.</p>
         </div>
     </div>
-
-    <script>
-        // Anda bisa menambahkan logika JavaScript di sini jika diperlukan
-        // Misalnya, untuk menangani integrasi dengan platform chatbot tertentu
-        document.querySelector('.btn').addEventListener('click', function() {
-            // Contoh: Mengarahkan ke WhatsApp atau platform lain
-            // Saat ini sudah diatur di href tombol
-            console.log('Tombol diklik!');
-        });
-    </script>
 </body>
 </html>
