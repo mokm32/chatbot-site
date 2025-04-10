@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif; /* Gunakan font modern */
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
@@ -23,19 +23,19 @@
         }
 
         .container {
-            background: rgba(26, 26, 26, 0.85); /* Latar gelap semi-transparan */
-            border: 2px solid #ff1a1a; /* Aksen merah */
+            background: rgba(26, 26, 26, 0.85);
+            border: 2px solid #ff1a1a;
             border-radius: 15px;
             max-width: 550px;
             padding: 40px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(255, 26, 26, 0.5); /* Cahaya merah */
+            box-shadow: 0 0 20px rgba(255, 26, 26, 0.5);
             animation: glow 2s infinite alternate;
         }
 
         @keyframes glow {
             from { box-shadow: 0 0 20px rgba(255, 26, 26, 0.5); }
-            to { box-shadow: 0 0 30px rgba(128, 0, 255, 0.7); } /* Transisi ke ungu */
+            to { box-shadow: 0 0 30px rgba(128, 0, 255, 0.7); }
         }
 
         h1 {
@@ -55,7 +55,7 @@
         }
 
         .btn {
-            background: linear-gradient(45deg, #ff1a1a, #8000ff); /* Gradasi merah ke ungu */
+            background: linear-gradient(45deg, #ff1a1a, #8000ff);
             color: #fff;
             padding: 15px 35px;
             border: none;
@@ -65,13 +65,37 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            display: inline-block;
         }
 
         .btn:hover {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
+        }
+
+        .input-section {
+            display: none; /* Awalnya disembunyikan */
+            margin-top: 20px;
+        }
+
+        .input-section input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ff1a1a;
+            border-radius: 5px;
+            background: #333;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .input-section input::placeholder {
+            color: #b3b3b3;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #8000ff, #ff1a1a);
+            padding: 12px 30px;
         }
 
         .info {
@@ -101,14 +125,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>Panggilan Hunter!</h1>
-        <p>
-            Selamat datang, Hunter! Untuk melacak pesananmu dari toko Shopee kami, siapkan <strong>ID Pesanan</strong> dan tekan tombol di bawah ini. Chatbot kami akan membantumu naik level dalam pelayanan!
-        </p>
-        <a href="https://wa.me/6281234567890?text=Halo!%20Saya%20ingin%20berbual%20tentang%20pesanan%20saya." class="btn">Aktifkan Shadow Chat</a>
+        <div id="welcome-section">
+            <h1>Panggilan Hunter!</h1>
+            <p>
+                Selamat datang, Hunter! Untuk melacak pesananmu dari toko Shopee kami, siapkan <strong>ID Pesanan</strong> dan tekan tombol di bawah ini. Chatbot kami akan membantumu naik level dalam pelayanan!
+            </p>
+            <button class="btn" onclick="showInput()">Aktifkan Shadow Chat</button>
+        </div>
+        <div id="input-section" class="input-section">
+            <h1>Masukkan ID Pesanan</h1>
+            <input type="text" id="order-id" placeholder="Contoh: 231012ABC123XYZ">
+            <button class="btn submit-btn" onclick="submitOrderId()">Kirim ke Chatbot</button>
+        </div>
         <div class="info">
             <p>Cara menemukan ID Pesanan: Buka Shopee > Pesanan Saya > Pilih pesanan > Lihat ID di detail.</p>
         </div>
     </div>
+
+    <script>
+        function showInput() {
+            document.getElementById('welcome-section').style.display = 'none';
+            document.getElementById('input-section').style.display = 'block';
+        }
+
+        function submitOrderId() {
+            const orderId = document.getElementById('order-id').value.trim();
+            if (orderId === '') {
+                alert('Silakan masukkan ID Pesanan terlebih dahulu!');
+                return;
+            }
+            // Arahkan ke WhatsApp dengan ID Pesanan
+            const whatsappUrl = `https://wa.me/6281234567890?text=Halo!%20ID%20Pesanan%20saya:%20${encodeURIComponent(orderId)}`;
+            window.location.href = whatsappUrl;
+        }
+    </script>
 </body>
 </html>
