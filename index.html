@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Chatbot Toko - Solo Leveling</title>
     <style>
         * {
@@ -18,22 +18,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Menggunakan min-height untuk responsivitas */
+            min-height: 100vh;
             color: #fff;
-            overflow-y: auto; /* Memungkinkan scroll jika konten panjang */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling di perangkat layar sentuh */
         }
 
         .container {
             background: rgba(26, 26, 26, 0.85);
             border: 2px solid #ff1a1a;
             border-radius: 15px;
+            width: 90%;
             max-width: 650px;
-            width: 90%; /* Membuat lebar responsif */
-            padding: 20px; /* Padding lebih kecil untuk smartphone */
+            padding: 20px;
             text-align: center;
             box-shadow: 0 0 20px rgba(255, 26, 26, 0.5);
             animation: glow 2s infinite alternate;
-            margin: 20px; /* Margin untuk jarak dari tepi layar */
+            margin: 10px auto; /* Margin auto untuk centering */
         }
 
         @keyframes glow {
@@ -43,39 +44,41 @@
 
         h1 {
             color: #ff1a1a;
-            font-size: clamp(24px, 5vw, 32px); /* Ukuran font responsif */
+            font-size: clamp(20px, 4vw, 32px); /* Ukuran font lebih fleksibel */
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
             text-shadow: 0 0 10px rgba(255, 26, 26, 0.8);
         }
 
         p {
             color: #d9d9d9;
-            font-size: clamp(14px, 3vw, 16px); /* Ukuran font responsif */
-            line-height: 1.6;
-            margin-bottom: 15px;
+            font-size: clamp(12px, 2.5vw, 16px);
+            line-height: 1.5;
+            margin-bottom: 10px;
         }
 
         .btn {
             background: linear-gradient(45deg, #ff1a1a, #8000ff);
             color: #fff;
-            padding: 12px 25px; /* Padding lebih kecil untuk smartphone */
+            padding: clamp(10px, 2vw, 15px) clamp(20px, 3vw, 35px); /* Padding responsif */
             border: none;
             border-radius: 10px;
-            font-size: clamp(14px, 3vw, 18px); /* Ukuran font responsif */
+            font-size: clamp(12px, 2.5vw, 18px);
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
-            margin: 5px;
-            width: 100%; /* Tombol penuh lebar di layar kecil */
-            max-width: 300px; /* Batas maksimum lebar di desktop */
+            margin: 5px auto;
+            display: block;
+            width: 80%; /* Lebar tombol lebih kecil di layar kecil */
+            max-width: 300px;
         }
 
-        .btn:hover {
+        .btn:hover, .btn:focus {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
+            outline: none; /* Untuk navigasi remote di Android TV */
         }
 
         .input-section, .choice-section, .loading, .result-section {
@@ -84,12 +87,12 @@
 
         .input-section input {
             width: 100%;
-            padding: 10px;
+            padding: clamp(8px, 2vw, 10px);
             border: 1px solid #ff1a1a;
             border-radius: 5px;
             background: #333;
             color: #fff;
-            font-size: clamp(14px, 3vw, 16px); /* Ukuran font responsif */
+            font-size: clamp(12px, 2.5vw, 16px);
             margin-bottom: 15px;
             outline: none;
         }
@@ -100,7 +103,6 @@
 
         .submit-btn {
             background: linear-gradient(45deg, #8000ff, #ff1a1a);
-            padding: 12px 25px;
         }
 
         .loading {
@@ -109,8 +111,8 @@
         }
 
         .loader {
-            width: 50px;
-            height: 50px;
+            width: clamp(30px, 5vw, 50px); /* Ukuran loader responsif */
+            height: clamp(30px, 5vw, 50px);
             border: 5px solid #ff1a1a;
             border-top: 5px solid #8000ff;
             border-radius: 50%;
@@ -134,46 +136,57 @@
 
         .warning {
             color: #ff1a1a;
-            font-size: clamp(12px, 2.5vw, 14px); /* Ukuran font responsif */
-            margin-top: 15px;
+            font-size: clamp(10px, 2vw, 14px);
+            margin-top: 10px;
             font-weight: bold;
+            line-height: 1.4;
         }
 
         .info {
-            margin-top: 20px;
-            font-size: clamp(12px, 2.5vw, 14px); /* Ukuran font responsif */
+            margin-top: 15px;
+            font-size: clamp(10px, 2vw, 14px);
             color: #b3b3b3;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         /* Media Queries untuk Responsivitas */
-        @media (max-width: 600px) {
+        @media (max-width: 480px) { /* Smartphone */
             .container {
                 padding: 15px;
             }
-
             .btn {
-                padding: 10px 20px;
-            }
-
-            .loader {
-                width: 40px;
-                height: 40px;
+                width: 90%;
+                padding: 8px 15px;
             }
         }
 
-        @media (min-width: 601px) {
+        @media (min-width: 481px) and (max-width: 768px) { /* Tablet atau Android Box */
             .container {
-                padding: 40px;
+                padding: 20px;
             }
-
             .btn {
-                width: auto; /* Tombol tidak penuh lebar di desktop */
+                width: 80%;
+            }
+        }
+
+        @media (min-width: 769px) { /* Desktop dan Android TV */
+            .container {
+                padding: 30px;
+            }
+            .btn {
+                width: auto;
                 display: inline-block;
             }
         }
+
+        /* Dukungan untuk Android TV dan Android Box */
+        @media (max-aspect-ratio: 16/9) { /* TV dengan rasio layar lebar */
+            .container {
+                max-width: 80%;
+            }
+        }
     </style>
- *" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
