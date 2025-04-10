@@ -134,6 +134,13 @@
             text-decoration: underline;
         }
 
+        .result-section .warning-text {
+            color: #ff1a1a;
+            font-size: clamp(14px, 3vw, 18px);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
         .error-section {
             text-align: center;
         }
@@ -235,7 +242,6 @@
     </div>
 
     <script>
-        // Inisialisasi penyimpanan ID yang sudah digunakan
         const usedOrderIds = JSON.parse(localStorage.getItem('usedOrderIds')) || [];
 
         function showInput() {
@@ -250,7 +256,6 @@
                 return;
             }
 
-            // Cek apakah ID sudah digunakan sebelumnya
             if (usedOrderIds.includes(orderId)) {
                 document.getElementById('input-section').style.display = 'none';
                 document.getElementById('error-section').style.display = 'block';
@@ -270,13 +275,13 @@
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('result-section').style.display = 'block';
 
-                // Simpan ID ke localStorage setelah berhasil menampilkan detail
                 usedOrderIds.push(window.orderId);
                 localStorage.setItem('usedOrderIds', JSON.stringify(usedOrderIds));
 
                 let resultContent = '';
                 if (deviceCount === 1) {
                     resultContent = `
+                        <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
                         <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
                         <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
                         <p>3. Link channel OTT Navigator: <a href="https://bit.ly/3RIht05" target="_blank">https://bit.ly/3RIht05</a></p>
@@ -291,6 +296,7 @@
                     `;
                 } else if (deviceCount === 2) {
                     resultContent = `
+                        <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
                         <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
                         <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
                         <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4j6uoVQ" target="_blank">https://bit.ly/4j6uoVQ</a></p>
@@ -305,6 +311,7 @@
                     `;
                 } else if (deviceCount === 3) {
                     resultContent = `
+                        <p class="warning-text">PERINGATAN!!!!! sila copy&paste detail INI!</p>
                         <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
                         <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
                         <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4llgq45" target="_blank">https://bit.ly/4llgq45</a></p>
