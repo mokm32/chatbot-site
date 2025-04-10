@@ -26,7 +26,7 @@
             background: rgba(26, 26, 26, 0.85);
             border: 2px solid #ff1a1a;
             border-radius: 15px;
-            max-width: 550px;
+            max-width: 650px;
             padding: 40px;
             text-align: center;
             box-shadow: 0 0 20px rgba(255, 26, 26, 0.5);
@@ -51,7 +51,7 @@
             color: #d9d9d9;
             font-size: 16px;
             line-height: 1.6;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
 
         .btn {
@@ -73,8 +73,7 @@
         }
 
         .input-section {
-            display: none; /* Awalnya disembunyikan */
-            margin-top: 20px;
+            display: none;
         }
 
         .input-section input {
@@ -96,6 +95,37 @@
         .submit-btn {
             background: linear-gradient(45deg, #8000ff, #ff1a1a);
             padding: 12px 30px;
+        }
+
+        .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ff1a1a;
+            border-top: 5px solid #8000ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result-section {
+            display: none;
+            text-align: left;
+        }
+
+        .result-section a {
+            color: #ff1a1a;
+            text-decoration: underline;
         }
 
         .info {
@@ -137,6 +167,14 @@
             <input type="text" id="order-id" placeholder="Contoh: 231012ABC123XYZ">
             <button class="btn submit-btn" onclick="submitOrderId()">Kirim ke Chatbot</button>
         </div>
+        <div id="loading" class="loading">
+            <div class="loader"></div>
+            <p>Menganalisis Pesanan...</p>
+        </div>
+        <div id="result-section" class="result-section">
+            <h1>Detail Pesanan Hunter</h1>
+            <div id="result-content"></div>
+        </div>
         <div class="info">
             <p>Cara menemukan ID Pesanan: Buka Shopee > Pesanan Saya > Pilih pesanan > Lihat ID di detail.</p>
         </div>
@@ -154,9 +192,69 @@
                 alert('Silakan masukkan ID Pesanan terlebih dahulu!');
                 return;
             }
-            // Arahkan ke WhatsApp dengan ID Pesanan
-            const whatsappUrl = `https://wa.me/6281234567890?text=Halo!%20ID%20Pesanan%20saya:%20${encodeURIComponent(orderId)}`;
-            window.location.href = whatsappUrl;
+
+            // Sembunyikan input, tampilkan loading
+            document.getElementById('input-section').style.display = 'none';
+            document.getElementById('loading').style.display = 'flex';
+
+            // Simulasi pengecekan pesanan (5 detik)
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result-section').style.display = 'block';
+
+                // Logika sederhana untuk menentukan jumlah perangkat
+                // Ganti dengan logika nyata berdasarkan database Anda
+                let deviceCount;
+                if (orderId.length < 15) deviceCount = 1; // Contoh: ID pendek = 1 device
+                else if (orderId.length < 20) deviceCount = 2; // ID sedang = 2 device
+                else deviceCount = 3; // ID panjang = 3 device
+
+                let resultContent = '';
+                if (deviceCount === 1) {
+                    resultContent = `
+                        <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
+                        <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
+                        <p>3. Link channel OTT Navigator: <a href="https://bit.ly/3RIht05" target="_blank">https://bit.ly/3RIht05</a></p>
+                        <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
+                        <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
+                        <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
+                        <p><strong>📌 Nota Penting</strong></p>
+                        <p>🔄 Sentiasa tekan Reload Data ID setiap kali buka aplikasi</p>
+                        <p>📱 1 ID hanya untuk 1 peranti sahaja</p>
+                        <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
+                        <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
+                    `;
+                } else if (deviceCount === 2) {
+                    resultContent = `
+                        <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
+                        <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
+                        <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4j6uoVQ" target="_blank">https://bit.ly/4j6uoVQ</a></p>
+                        <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
+                        <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
+                        <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
+                        <p><strong>📌 Nota Penting</strong></p>
+                        <p>🔄 Sentiasa tekan Reload Data ID setiap kali buka aplikasi</p>
+                        <p>📱 1 ID hanya untuk 2 peranti sahaja</p>
+                        <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
+                        <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
+                    `;
+                } else {
+                    resultContent = `
+                        <p>1. Download dan install apps OTT TV/Player/Navigator di Playstore.</p>
+                        <p>2. Cara masukkan link channel di OTT Navigator: <a href="https://youtu.be/rN1T5i57VyA" target="_blank">https://youtu.be/rN1T5i57VyA</a></p>
+                        <p>3. Link channel OTT Navigator: <a href="https://bit.ly/4llgq45" target="_blank">https://bit.ly/4llgq45</a></p>
+                        <p><strong>*OTT SETUP FOLLOW STEP*</strong></p>
+                        <p>Tekan Live Stream >> Configure Provider >> Add Provider >> Playlist >> URL Address: masukkan ID yang kami bagi >> Apply >> Apply >> Return (OK Done)</p>
+                        <p>Dah login, sila tekan "Received Order" dan buat Penilaian tanpa gambar berkaitan playlist ye. Tiada Penilaian, dikira tak jalan & link channel akan di-off dalam masa yang sama. Terima kasih!</p>
+                        <p><strong>📌 Nota Penting</strong></p>
+                        <p>🔄 Sentiasa tekan Reload Data ID setiap kali buka aplikasi</p>
+                        <p>📱 1 ID hanya untuk 3 peranti sahaja</p>
+                        <p>💬 Jika ada masalah, hubungi kami terus di chat</p>
+                        <p>🛍️ Jangan lupa follow kedai kami untuk update & promosi!</p>
+                    `;
+                }
+                document.getElementById('result-content').innerHTML = resultContent;
+            }, 5000); // 5 detik
         }
     </script>
 </body>
