@@ -21,7 +21,7 @@
             min-height: 100vh;
             color: #fff;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling di perangkat layar sentuh */
+            -webkit-overflow-scrolling: touch;
         }
 
         .container {
@@ -34,7 +34,7 @@
             text-align: center;
             box-shadow: 0 0 20px rgba(255, 26, 26, 0.5);
             animation: glow 2s infinite alternate;
-            margin: 10px auto; /* Margin auto untuk centering */
+            margin: 10px auto;
         }
 
         @keyframes glow {
@@ -44,7 +44,7 @@
 
         h1 {
             color: #ff1a1a;
-            font-size: clamp(20px, 4vw, 32px); /* Ukuran font lebih fleksibel */
+            font-size: clamp(20px, 4vw, 32px);
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 15px;
@@ -61,7 +61,7 @@
         .btn {
             background: linear-gradient(45deg, #ff1a1a, #8000ff);
             color: #fff;
-            padding: clamp(10px, 2vw, 15px) clamp(20px, 3vw, 35px); /* Padding responsif */
+            padding: clamp(10px, 2vw, 15px) clamp(20px, 3vw, 35px);
             border: none;
             border-radius: 10px;
             font-size: clamp(12px, 2.5vw, 18px);
@@ -71,17 +71,17 @@
             transition: transform 0.3s, box-shadow 0.3s;
             margin: 5px auto;
             display: block;
-            width: 80%; /* Lebar tombol lebih kecil di layar kecil */
+            width: 80%;
             max-width: 300px;
         }
 
         .btn:hover, .btn:focus {
             transform: scale(1.05);
             box-shadow: 0 0 15px rgba(255, 26, 26, 0.8);
-            outline: none; /* Untuk navigasi remote di Android TV */
+            outline: none;
         }
 
-        .input-section, .choice-section, .loading, .result-section {
+        .input-section, .choice-section, .loading, .result-section, .error-section {
             display: none;
         }
 
@@ -111,7 +111,7 @@
         }
 
         .loader {
-            width: clamp(30px, 5vw, 50px); /* Ukuran loader responsif */
+            width: clamp(30px, 5vw, 50px);
             height: clamp(30px, 5vw, 50px);
             border: 5px solid #ff1a1a;
             border-top: 5px solid #8000ff;
@@ -134,6 +134,16 @@
             text-decoration: underline;
         }
 
+        .error-section {
+            text-align: center;
+        }
+
+        .error-section p {
+            color: #ff1a1a;
+            font-size: clamp(14px, 3vw, 18px);
+            font-weight: bold;
+        }
+
         .warning {
             color: #ff1a1a;
             font-size: clamp(10px, 2vw, 14px);
@@ -149,8 +159,7 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
-        /* Media Queries untuk Responsivitas */
-        @media (max-width: 480px) { /* Smartphone */
+        @media (max-width: 480px) {
             .container {
                 padding: 15px;
             }
@@ -160,7 +169,7 @@
             }
         }
 
-        @media (min-width: 481px) and (max-width: 768px) { /* Tablet atau Android Box */
+        @media (min-width: 481px) and (max-width: 768px) {
             .container {
                 padding: 20px;
             }
@@ -169,7 +178,7 @@
             }
         }
 
-        @media (min-width: 769px) { /* Desktop dan Android TV */
+        @media (min-width: 769px) {
             .container {
                 padding: 30px;
             }
@@ -179,8 +188,7 @@
             }
         }
 
-        /* Dukungan untuk Android TV dan Android Box */
-        @media (max-aspect-ratio: 16/9) { /* TV dengan rasio layar lebar */
+        @media (max-aspect-ratio: 16/9) {
             .container {
                 max-width: 80%;
             }
@@ -218,12 +226,18 @@
             <h1>Detail Pesanan Hunter</h1>
             <div id="result-content"></div>
         </div>
+        <div id="error-section" class="error-section">
+            <p>SORRY PESANAN INI SUDAH PERNAH DI GUNAKAN</p>
+        </div>
         <div class="info">
             <p>Cara menemukan ID Pesanan: Buka Shopee > Pesanan Saya > Pilih pesanan > Lihat ID di detail.</p>
         </div>
     </div>
 
     <script>
+        // Inisialisasi penyimpanan ID yang sudah digunakan
+        const usedOrderIds = JSON.parse(localStorage.getItem('usedOrderIds')) || [];
+
         function showInput() {
             document.getElementById('welcome-section').style.display = 'none';
             document.getElementById('input-section').style.display = 'block';
@@ -235,6 +249,14 @@
                 alert('Silakan masukkan ID Pesanan terlebih dahulu!');
                 return;
             }
+
+            // Cek apakah ID sudah digunakan sebelumnya
+            if (usedOrderIds.includes(orderId)) {
+                document.getElementById('input-section').style.display = 'none';
+                document.getElementById('error-section').style.display = 'block';
+                return;
+            }
+
             window.orderId = orderId;
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('choice-section').style.display = 'block';
@@ -247,6 +269,10 @@
             setTimeout(() => {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('result-section').style.display = 'block';
+
+                // Simpan ID ke localStorage setelah berhasil menampilkan detail
+                usedOrderIds.push(window.orderId);
+                localStorage.setItem('usedOrderIds', JSON.stringify(usedOrderIds));
 
                 let resultContent = '';
                 if (deviceCount === 1) {
